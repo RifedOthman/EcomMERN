@@ -1,11 +1,16 @@
-import express from "express" ; 
+import express, { Response } from "express" ; 
 import { getActiveCartForUser } from "../services/cartService";
+import validateJWT from "../middlewares/validateJWT";
+import { ExtendRequest } from "../types/extendedRequest";
+
 
 const router = express.Router() ; 
 
-router.get('/', async (req , res)=>{
-        //NEED JWT USER ID 
-    const cart = await getActiveCartForUser({userId:"XX"}) ; 
-    res.status(200).send(cart) ; 
-    
-})
+router.get("/", validateJWT, async (req, res) => {
+    const userId = (req as any).user?._id;
+    const cart = await getActiveCartForUser({ userId });
+    res.status(200).send(cart);
+  });
+
+  
+export default router ;
