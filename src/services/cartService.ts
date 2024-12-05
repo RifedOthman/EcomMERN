@@ -84,7 +84,6 @@ export const updateItemToCart = async ({userId, productId, quantity }:UpdateItem
     }
 
     const product = await productModel.findById(productId) ; 
-    console.log(product) ; 
     if (!product){
         return {data : "product not found !", statusCode:404 } ;
     } 
@@ -111,6 +110,36 @@ export const updateItemToCart = async ({userId, productId, quantity }:UpdateItem
     const updateCart = await cart.save() ; 
 
     return {data : updateCart , statusCode : 201 } ; 
-}
+}; 
+
+interface deleteItemFromCart{
+    productId: any ; 
+    userId: string ; 
+} 
+
+
+export const deleteItemFromCart = async ({userId , productId}:deleteItemFromCart)=> {
+    const cart = await getActiveCartForUser({userId}) ; 
+    
+    const existsInCart = cart.items.find((p)=> p.product.toString() === productId);
+    
+    if (!existsInCart){
+        return {data : "item Doesnt Exists in cart !", statusCode:400 } ; 
+    }
+
+    const otherCartItems = cart.items.filter((p)=> p.product.toString() !== productId )    
+    const total = otherCartItems.reduce((sum, product)=> {
+        sum += product.quantity * product.unitPrice ; 
+        return sum ; 
+    },0) 
+
+    cart.items = otherCartItems ; 
+    
+    cart.totalAmount = total ; 
+ 
+    const updateCart = await cart.save() ; 
+
+    return {data : updateCart , statusCode : 201 } ; 
+};
 
 
