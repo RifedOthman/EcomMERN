@@ -66,3 +66,49 @@ const updateCart = await cart.save() ;
 
 return {data : updateCart , statusCide : 201 } ; 
 }
+
+interface UpdateItemInCart{
+    productId: any ; 
+    userId: string ;
+    quantity : number ; 
+}
+
+export const updateItemToCart = async ({userId, productId, quantity }:UpdateItemInCart)=>{
+    const cart = await getActiveCartForUser({userId}) ; 
+    
+    //existing item that we are going to update 
+    const existsInCart = cart.items.find((p)=> p.product.toString() === productId);
+    
+    if (!existsInCart){
+        return {data : "item doesnt exist in cart  !", statusCode:400 } ; 
+    }
+
+    const product = await productModel.findById(productId) ; 
+
+    if (!product){
+        return {data : "product not found !", statusCode:404 } ;
+    } 
+
+    if (product.stock < quantity ){
+        return {data : "product stock is less than quantity !", statusCode:400 } ;
+    }
+
+    // calculating sum of cart except the one that we will update 
+    const otherCartItems = cart.items.filter((p)=> p.product.toString() !== productId )    
+    let total = otherCartItems.reduce((sum, product)=> {
+        sum += product.quantity * product.unitPrice ; 
+        return sum ; 
+    },0) 
+
+
+    //now , we add our existing cart to the sum of cart 
+    existsInCart.quantity = quantity ; 
+
+    total += existsInCart.quantity * existsInCart.unitPrice ; 
+
+    const updateCart = await cart.save() ; 
+
+    return {data : updateCart , statusCode : 201 } ; 
+}
+
+
