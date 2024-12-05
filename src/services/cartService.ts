@@ -143,3 +143,15 @@ export const deleteItemFromCart = async ({userId , productId}:deleteItemFromCart
 };
 
 
+interface clearCart{
+    userId: string ; 
+}  
+
+export const clearCart = async({userId}:clearCart)=>{
+    const cart = await getActiveCartForUser({userId}) ; 
+    cart.items= []  ; 
+    cart.totalAmount = 0 ;
+    const updateCart = await cart.save() ; 
+    return {data : updateCart , statusCode : 201 } ; 
+
+}; 
