@@ -84,7 +84,7 @@ export const updateItemToCart = async ({userId, productId, quantity }:UpdateItem
     }
 
     const product = await productModel.findById(productId) ; 
-
+    console.log(product) ; 
     if (!product){
         return {data : "product not found !", statusCode:404 } ;
     } 
@@ -105,6 +105,8 @@ export const updateItemToCart = async ({userId, productId, quantity }:UpdateItem
     existsInCart.quantity = quantity ; 
 
     total += existsInCart.quantity * existsInCart.unitPrice ; 
+
+    cart.totalAmount = total ; 
 
     const updateCart = await cart.save() ; 
 
