@@ -1,4 +1,5 @@
 import  { cartModel } from "../models/cartModel" ; 
+import { IOrderItem, orderModel } from "../models/orderModel";
 import productModel from "../models/productModel";
 
 
@@ -155,3 +156,50 @@ export const clearCart = async({userId}:clearCart)=>{
     return {data : updateCart , statusCode : 201 } ; 
 
 }; 
+interface checkOut{
+    userId:string ; 
+    adress : string ; 
+}
+export const checkout = async ({userId, adress}:checkOut)=>{
+    if (!adress ){
+        return {data : "adress is required", statusCode : 400 }
+    }
+    
+    const cart = await getActiveCartForUser({userId}); 
+
+    const orderItems : IOrderItem[] = [] 
+    // looping cart then i create with it an order
+    for (const item of cart.items ){
+        const product = await productModel.findById(item.product) ;
+        if (!product ){
+            return {data : "Product not found" , statusCode : 400 } ; 
+    }
+    
+
+    const orderItem:IOrderItem = {
+        productTitle : product.title  ,
+        productImage : product.image ,
+        quantity : item.quantity , 
+        unitPrice: item.unitPrice ,         
+    }
+
+    orderItems.push(orderItem) 
+
+    }
+
+    const order = await orderModel.create ({
+        orderItems , 
+        total: cart.totalAmount , 
+        adress, 
+        userId ,
+    }) ; 
+     
+    await order.save() ;
+
+    // update cart status to completed : 
+    cart.status = "completed" ; 
+    await cart.save() ;
+    //return data 
+    return {data : order , statusCode : 201 } ;
+
+}
