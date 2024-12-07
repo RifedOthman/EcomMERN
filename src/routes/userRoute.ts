@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post('/register', async (request,response)=>{
     try {
-
         const {firstName,lastName,email,password} = request.body; 
         const result = await register({firstName,lastName,email,password})
     
@@ -15,7 +14,7 @@ router.post('/register', async (request,response)=>{
     }catch (err){
         response.status(500).json({message: 'Internal Server Error'});
     }
-   
+    
 })
 
 router.post('/login', async (request,response)=>{

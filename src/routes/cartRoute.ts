@@ -67,14 +67,16 @@ router.post("/items", validateJWT, async (req: ExtendRequest, res) => {
   router.post("/checkout", validateJWT, async(req:ExtendRequest, res)=>{
     try {
       const userId = req?.user?._id;
-      const adress = req.body ; 
+      const {adress} = req.body ; 
+      console.log(adress)  ;
       const response = await checkout({userId,adress}) ; 
       res.status(res.statusCode).send(response.data);
+    
     }catch(err){
       res.status(500).send({ message: "Error Something wrong ! " });
     }
+     
   
-
   })
 
 export default router ;

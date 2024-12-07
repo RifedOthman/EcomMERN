@@ -166,7 +166,7 @@ export const checkout = async ({userId, adress}:checkOut)=>{
     }
     
     const cart = await getActiveCartForUser({userId}); 
-
+  
     const orderItems : IOrderItem[] = [] 
     // looping cart then i create with it an order
     for (const item of cart.items ){
@@ -174,6 +174,7 @@ export const checkout = async ({userId, adress}:checkOut)=>{
         if (!product ){
             return {data : "Product not found" , statusCode : 400 } ; 
     }
+
     
 
     const orderItem:IOrderItem = {
@@ -186,6 +187,7 @@ export const checkout = async ({userId, adress}:checkOut)=>{
     orderItems.push(orderItem) 
 
     }
+    console.log(orderItems) ; 
 
     const order = await orderModel.create ({
         orderItems , 
@@ -193,9 +195,7 @@ export const checkout = async ({userId, adress}:checkOut)=>{
         adress, 
         userId ,
     }) ; 
-     
     await order.save() ;
-
     // update cart status to completed : 
     cart.status = "completed" ; 
     await cart.save() ;
