@@ -16,7 +16,7 @@ const validateJWT = (req: ExtendRequest, res: Response, next: NextFunction) => {
      return ; 
   }
 //payload has the data crypted inside
-jwt.verify(token,"|Qq2idD}X%eF,LZ}Kk%>AfJ4r>*o<CvK", async (err, payload) => {
+jwt.verify(token,process.env.JWT_SECRET || "", async (err, payload) => {
   if (err) {
      res.status(403).send("Invalid token");
      return ; 
