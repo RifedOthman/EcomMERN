@@ -4,8 +4,13 @@ import { getAllProducts } from "../services/productService";
 const router = express.Router() ; 
 
 router.get('/', async (req, res)=>{
-    const products = await getAllProducts(); 
-    res.status(200).send(products) 
+    try {
+        const products = await getAllProducts(); 
+        res.status(200).send(products) 
+    }catch (err){
+        res.status(500).json({message: 'Something went wrong ! '}) ;
+    }
+   
     
 })
 
