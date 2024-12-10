@@ -3,24 +3,41 @@ import Grid from '@mui/material/Grid';
 import ProductCard from '../components/ProductCard';
 import { useState, useEffect } from 'react';
 import { Product } from '../types/Product';
+import { BASE_URL } from '../constants/baseUrl';
+import Box from '@mui/material/Box';
 
 const HomePage = ()=> {
 
     const [products, setProducts] =  useState <Product[]>([]); 
-
+    const [error,setError] = useState(false)
 
     useEffect(()=>{
-        fetch("http://localhost:3001/product").then (async(response) =>{
-            const data = await response.json(); 
-            console.log(data) ; 
-            setProducts(data) ;
-        })
-    })
+        const fetchData = async ()=>{
+
+        try {
+
+       
+        const response = await fetch(`${BASE_URL}/product`) 
+        const data = await response.json() ; 
+        setProducts(data) ; 
+
+    } catch{
+        setError(true)
+    }
+            }; 
+
+        fetchData() ; 
+    },[])
+
+if (error){
+    return <Box>Something went wrong ! </Box>
+}
+
     return <Container sx= {{mt: 2}}>
         <Grid container spacing = {2 }>
-            {products.map(({_id , title , image , price})=> (
+            {products.map((p)=> (
                             <Grid item md = {4}>
-                                 <ProductCard id={_id} title={title}  image = {image }  price = {price}  />
+                                 <ProductCard {...p}  />
                              </Grid>
 
             ))}
