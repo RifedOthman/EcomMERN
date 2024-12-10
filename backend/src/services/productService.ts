@@ -7,7 +7,8 @@ export const getAllProducts = async ()=> {
 export const seedInitialProducts = async ()=> {
     const products = [
         { title: "SONY",image:"https://m.media-amazon.com/images/I/61-rQj6wZnL.jpg", price: 10.99 , stock: 100},
-        { title: "ACER",image:"https://m.media-amazon.com/images/I/61-rQj6wZnL.jpg", price: 10.99 , stock: 100}
+        { title: "ACER",image:"https://m.media-amazon.com/images/I/61-rQj6wZnL.jpg", price: 10.99 , stock: 100},
+        { title: "MICROSOFT",image:"https://m.media-amazon.com/images/I/61-rQj6wZnL.jpg", price: 10.99 , stock: 100}
         
     ]; 
 

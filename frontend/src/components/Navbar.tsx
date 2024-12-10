@@ -48,11 +48,10 @@ function Navbar() {
               textDecoration: 'none',
             }}
           >
-            OUH YEAH PROJECT
+      
+            E-commerce
           </Typography>
           </Box>
-          </Box>
-         
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -81,6 +80,8 @@ function Navbar() {
                 </MenuItem>
               ))}
             </Menu>
+          </Box>
+
           </Box>
         </Toolbar>
       </Container>
