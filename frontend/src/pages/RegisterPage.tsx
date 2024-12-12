@@ -56,11 +56,8 @@ const RegisterPage = () => {
             <TextField inputRef={lastNameRef} label="last Name" name ="last Name"> </TextField>      
             <TextField inputRef={emailRef} label="Email Name" name ="email "> </TextField>            
             <TextField inputRef={passwordRef} label="Password" name ="password " type = "password"> </TextField> 
-                       
             <Button variant ='contained' onClick={onSubmit}> Register</Button>
-            {error && <Typography sx= {{color : "red "}}>{error}</Typography> }
-           
-            
+            {error && <Typography sx= {{color : "red "}}>{error}</Typography> }  
         </Box>
         
       </Box>
