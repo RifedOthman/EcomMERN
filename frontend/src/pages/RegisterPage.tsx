@@ -1,20 +1,19 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import { useRef } from "react";
+import { useRef , useState} from "react";
 import { BASE_URL } from "../constants/baseUrl";
 
 const RegisterPage = () => {
-
     const firstNameRef = useRef<HTMLInputElement>(null) ; 
     const lastNameRef = useRef<HTMLInputElement>(null) ; 
     const emailRef = useRef<HTMLInputElement>(null); 
     const passwordRef = useRef<HTMLInputElement>(null);
+    const [error,setError] = useState("")
 
     const onSubmit = async() => {
         const firstName = firstNameRef.current?.value;
         const lastName = lastNameRef.current?.value ; 
         const email = emailRef.current?.value ; 
-        const password = passwordRef.current?.value ; 
-
+        const password = passwordRef.current?.value ;
 
         console.log(name, email , password ) ; 
 
@@ -29,8 +28,15 @@ const RegisterPage = () => {
             })
         });
 
+        if (!response.ok ){
+            setError("unable to register USER ! try diffenent credentials ") ; 
+            return ; 
+
+        }
         const data = await response.json() ; 
         console.log(data); 
+
+
 
     }
     return (
@@ -49,9 +55,14 @@ const RegisterPage = () => {
             <TextField inputRef={firstNameRef} label="first Name" name ="firstName "> </TextField>      
             <TextField inputRef={lastNameRef} label="last Name" name ="last Name"> </TextField>      
             <TextField inputRef={emailRef} label="Email Name" name ="email "> </TextField>            
-            <TextField inputRef={passwordRef} label="Password" name ="password " type = "password"> </TextField>            
+            <TextField inputRef={passwordRef} label="Password" name ="password " type = "password"> </TextField> 
+                       
             <Button variant ='contained' onClick={onSubmit}> Register</Button>
+            {error && <Typography sx= {{color : "red "}}>{error}</Typography> }
+           
+            
         </Box>
+        
       </Box>
     </Container>
   );
