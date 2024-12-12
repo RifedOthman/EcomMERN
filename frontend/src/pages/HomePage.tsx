@@ -13,15 +13,11 @@ const HomePage = ()=> {
 
     useEffect(()=>{
         const fetchData = async ()=>{
-
-        try {
-
-       
+        try {     
         const response = await fetch(`${BASE_URL}/product`) 
         const data = await response.json() ; 
         setProducts(data) ; 
-
-    } catch{
+        } catch{
         setError(true)
     }
             }; 
