@@ -29,7 +29,8 @@ if (error){
     return <Box>Something went wrong ! </Box>
 }
 
-    return <Container sx= {{mt: 2}}>
+    return (
+    <Container sx= {{mt: 2}}>
         <Grid container spacing = {2 }>
             {products.map((p)=> (
                             <Grid item md = {4}>
@@ -42,6 +43,6 @@ if (error){
         </Grid>
         
     </Container>
-
+    );
 }
 export default HomePage ; 
