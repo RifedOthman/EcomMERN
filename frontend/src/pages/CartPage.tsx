@@ -6,7 +6,7 @@ import { useAuth } from "../context/Auth/AuthContext";
 const CartPage = ()=> {
     const {token} =  useAuth() ; 
     const [cart , setCart ] = useState(); 
-    const [error,setError] = useState('') ;
+    const [,setError] = useState('') ;
 
     useEffect(()=>{
 
@@ -26,8 +26,6 @@ const CartPage = ()=> {
 
             const data = await response.json() ; 
             setCart(data) ; 
-
-        
      
         }; 
         fetchCart() ; 
