@@ -17,12 +17,20 @@ const createCartForUser= async ({userId} : CreateCartForUser)=>{
 
 interface GetActiveCartForUser{
     userId: string ;
+    populateProduct? : boolean ; 
 }
 
 
-export const getActiveCartForUser = async ({userId} : GetActiveCartForUser)=>{
+export const getActiveCartForUser = async ({userId,populateProduct} : GetActiveCartForUser)=>{
 
-    let cart = await cartModel.findOne({userId,status:"active"}); 
+    let cart  ; 
+    if (populateProduct) {
+        cart = await cartModel
+        .findOne({userId,status:"active"})
+        .populate('items.product'); 
+    } else {
+       cart = await cartModel.findOne({userId,status:"active"}); 
+    }
 
     if (!cart){
         cart = await createCartForUser ({userId}) ; 
@@ -65,7 +73,7 @@ cart.totalAmount += product.price * quantity  ;
 
 const updateCart = await cart.save() ; 
 
-return {data : updateCart , statusCide : 201 } ; 
+return {data : await getActiveCartForUser({userId, populateProduct:true}) , statusCide : 201 } ; 
 }
 
 interface UpdateItemInCart{
@@ -108,9 +116,9 @@ export const updateItemToCart = async ({userId, productId, quantity }:UpdateItem
 
     cart.totalAmount = total ; 
 
-    const updateCart = await cart.save() ; 
+    await cart.save() ; 
 
-    return {data : updateCart , statusCode : 201 } ; 
+    return {data : await getActiveCartForUser({userId, populateProduct: true }) , statusCode : 201 } ; 
 }; 
 
 interface deleteItemFromCart{
@@ -140,7 +148,7 @@ export const deleteItemFromCart = async ({userId , productId}:deleteItemFromCart
  
     const updateCart = await cart.save() ; 
 
-    return {data : updateCart , statusCode : 201 } ; 
+    return {data : await getActiveCartForUser({userId, populateProduct: true}) , statusCode : 201 } ; 
 };
 
 
