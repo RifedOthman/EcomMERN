@@ -70,12 +70,12 @@ const CartProvider : FC<PropsWithChildren> = ({children}) =>{
 
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const cartItemsMapped = cart.items.map(({product , quantity } : { product : any ; quantity: number })=>({
+            const cartItemsMapped = cart.items.map(({product , quantity , unitPrice} : { product : any ; quantity: number ; unitPrice : number })=>({
                 productId: product._id,
                 title : product.title ,
-                unitPrice : product.price ,
+                unitPrice ,
                 quantity,
-                Image : product.image  }))
+                image : product.image  }))
             setCartItems([...cartItemsMapped]) ; 
             setTotalAmount(cart.totalAmount) ;
 
