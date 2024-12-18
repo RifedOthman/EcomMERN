@@ -36,14 +36,15 @@ const CartProvider : FC<PropsWithChildren> = ({children}) =>{
                 const cartItemsMapped = cart.items.map(({product , quantity } : { product : any ; quantity: number })=>({
                     productId: product._id,
                     title : product.title ,
+                    image : product.image, 
                     unitPrice : product.price ,
                     quantity,
-                    Image : product.image  }))
+                      }))
                     
             setCartItems(cartItemsMapped) ; 
             setTotalAmount(cart.totalAmount) ;
-     
         }; 
+        
         fetchCart() ; 
     }, [token] )    ; 
     
@@ -66,17 +67,64 @@ const CartProvider : FC<PropsWithChildren> = ({children}) =>{
             if (!response.ok) {
                 setError('failed to add to cart ') ;
             }
+
+            
             const cart = await response.json() ; 
 
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const cartItemsMapped = cart.items.map(
-                ({product , quantity , unitPrice} : { product : any ; quantity: number ; unitPrice : number })=>({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ({product , quantity } : { product : any ; quantity: number ; unitPrice : number })=>({
                 productId: product._id,
                 title : product.title , 
                 image : product.image , 
                 quantity,
-                unitPrice , 
+                unitPrice : product.unitPrice , 
+            })
+        ) ; 
+            setCartItems([...cartItemsMapped]) ; 
+            setTotalAmount(cart.totalAmount) ;
+
+
+
+
+        } catch (error){
+console.log(error) ; 
+        }
+    };
+
+    const updateItemInCart = async (productId: string , quantity : number) => {
+        try {
+            const response = await fetch (`${BASE_URL}/cart/items` , {
+                method: "PUT", 
+                headers: {
+                    'Content-Type' : 'application/json' , 
+                    Authorization: `Bearer ${token}` , 
+                },
+                body: JSON.stringify({
+                    productId , 
+                    quantity  
+                }) , 
+            });
+
+            if (!response.ok) {
+                setError('failed to add to update item in cart ') ;
+            }
+            const cart = await response.json() ; 
+            if (!cart ){
+                setError('failed to get cart data')
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const cartItemsMapped = cart.items.map(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ({product , quantity, unitPrice } : { product : any ; quantity: number ; unitPrice: number })=>({
+                productId: product._id,
+                title : product.title , 
+                image : product.image , 
+                quantity,
+                unitPrice : unitPrice, 
             })
         ) ; 
             setCartItems([...cartItemsMapped]) ; 
@@ -88,7 +136,7 @@ console.log(error) ;
     }
 
 return (
-    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart }}>
+    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart , updateItemInCart}}>
         {children}
     </CartContext.Provider>
 )

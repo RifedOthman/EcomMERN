@@ -1,5 +1,4 @@
 import {  Container, Typography } from "@mui/material"
-import { useAuth } from "../context/Auth/AuthContext";
 import { useCart } from "../context/Cart/CartContext";
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup'; 
@@ -7,7 +6,15 @@ import Box from '@mui/material/Box';
 
 
 const CartPage = ()=> {
-    const {cartItems, totalAmount} = useCart() ; 
+    const {cartItems, totalAmount , updateItemInCart} = useCart() ; 
+    
+    const handleQuantity = (productId: string , quantity : number ) =>{
+        updateItemInCart(productId, quantity)
+    } ; 
+    
+    
+
+ 
 
 
 
@@ -26,7 +33,7 @@ return (
         sx={{
             border : 1 , borderColor: "f2f2f2" , borderRadius: 5 
         }} > 
-            <img src={item.Image} width={158}></img>
+            <img src={item.image} width={158}></img>
             <Typography>
             {item.title}  
             </Typography>
@@ -38,8 +45,8 @@ return (
             </Typography>
 
         <ButtonGroup variant="contained" aria-label="Basic button group">
-        <Button>-</Button>
-        <Button>+</Button>
+        <Button onClick={() =>  handleQuantity(item.productId, item.quantity -1 ) }>-</Button>
+        <Button onClick={() => handleQuantity(item.productId, item.quantity +1 )}>+</Button>
         </ButtonGroup>
         <Button> Remove item </Button>
     
