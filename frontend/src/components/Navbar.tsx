@@ -32,6 +32,8 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+ 
+
   const handleLogin = () => {
     navigate("/login");
   };
@@ -139,7 +141,7 @@ function Navbar() {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
-                    <MenuItem onClick={handleCloseUserMenu}>
+                    <MenuItem onClick={handleCart}>
                       <Typography textAlign="center">My Orders </Typography>
                     </MenuItem>
 

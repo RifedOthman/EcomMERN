@@ -12,7 +12,6 @@ const CartProvider : FC<PropsWithChildren> = ({children}) =>{
     const [error, setError] = useState("") ; 
 
 
-
         useEffect(()=>{
 
         if (!token){
@@ -44,7 +43,7 @@ const CartProvider : FC<PropsWithChildren> = ({children}) =>{
             setCartItems(cartItemsMapped) ; 
             setTotalAmount(cart.totalAmount) ;
         }; 
-        
+
         fetchCart() ; 
     }, [token] )    ; 
     

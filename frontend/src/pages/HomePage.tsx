@@ -38,8 +38,6 @@ if (error){
                              </Grid>
 
             ))}
-          
-
         </Grid>
         
     </Container>
