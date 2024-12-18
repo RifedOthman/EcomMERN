@@ -16,10 +16,15 @@ return (
     <Typography>
         Cart Page
     </Typography>
-<Box display = "flex" flexDirection="column" gap={4} > 
+<Box display = 'flex' flexDirection='column' gap={4} > 
     {cartItems.map((item) => (
-        <Box display = 'flex ' flexDirection='row' justifyContent="space-between" alignItems="center" 
-        sx={{border : 1 , borderColor: "f2f2f2" , borderRadius: 5 
+        <Box 
+        display = 'flex ' 
+        flexDirection='row' 
+        justifyContent="space-between" 
+        alignItems="center" 
+        sx={{
+            border : 1 , borderColor: "f2f2f2" , borderRadius: 5 
         }} > 
             <img src={item.Image} width={158}></img>
             <Typography>
@@ -36,12 +41,18 @@ return (
         <Button>-</Button>
         <Button>+</Button>
         </ButtonGroup>
-        <Button>Remove item </Button>
+        <Button> Remove item </Button>
     
         </Box>
 
         
     ))}
+
+    <Box>
+        <Typography variant='h4' >
+            Total Amount : {totalAmount.toFixed(2) +" $"}
+        </Typography>
+    </Box>
     </Box>
 </Container>
 ) ; 

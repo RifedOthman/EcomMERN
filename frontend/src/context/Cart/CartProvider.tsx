@@ -39,9 +39,9 @@ const CartProvider : FC<PropsWithChildren> = ({children}) =>{
                     unitPrice : product.price ,
                     quantity,
                     Image : product.image  }))
-
-
+                    
             setCartItems(cartItemsMapped) ; 
+            setTotalAmount(cart.totalAmount) ;
      
         }; 
         fetchCart() ; 
@@ -70,12 +70,15 @@ const CartProvider : FC<PropsWithChildren> = ({children}) =>{
 
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const cartItemsMapped = cart.items.map(({product , quantity , unitPrice} : { product : any ; quantity: number ; unitPrice : number })=>({
+            const cartItemsMapped = cart.items.map(
+                ({product , quantity , unitPrice} : { product : any ; quantity: number ; unitPrice : number })=>({
                 productId: product._id,
-                title : product.title ,
-                unitPrice ,
+                title : product.title , 
+                image : product.image , 
                 quantity,
-                image : product.image  }))
+                unitPrice , 
+            })
+        ) ; 
             setCartItems([...cartItemsMapped]) ; 
             setTotalAmount(cart.totalAmount) ;
 
@@ -85,7 +88,7 @@ console.log(error) ;
     }
 
 return (
-    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart}}>
+    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart }}>
         {children}
     </CartContext.Provider>
 )
