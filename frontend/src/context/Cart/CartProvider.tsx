@@ -134,8 +134,45 @@ console.log(error) ;
         }
     }
 
+
+   const deleteItemInCart = async (productId : string )=> {
+
+    try {
+        const response = await fetch (`${BASE_URL}/cart/items/${productId}` , {
+            method: "DELETE", 
+            headers: {
+                Authorization: `Bearer ${token}` , 
+            }
+        });
+
+        if (!response.ok) {
+            setError('failed to Delete ') ;
+        }
+        const cart = await response.json() ; 
+        if (!cart ){
+            setError('failed to get cart data')
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const cartItemsMapped = cart.items.map(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ({product , quantity, unitPrice } : { product : any ; quantity: number ; unitPrice: number })=>({
+            productId: product._id,
+            title : product.title , 
+            image : product.image , 
+            quantity,
+            unitPrice : unitPrice, 
+        })
+    ) ; 
+        setCartItems([...cartItemsMapped]) ; 
+        setTotalAmount(cart.totalAmount) ;
+
+    } catch (error){
+console.log(error) ; 
+    }
+   }
 return (
-    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart , updateItemInCart}}>
+    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart , updateItemInCart , deleteItemInCart}}>
         {children}
     </CartContext.Provider>
 )

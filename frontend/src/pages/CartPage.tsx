@@ -6,13 +6,17 @@ import Box from '@mui/material/Box';
 
 
 const CartPage = ()=> {
-    const {cartItems, totalAmount , updateItemInCart} = useCart() ; 
+    const {cartItems, totalAmount , updateItemInCart , deleteItemInCart} = useCart() ; 
     
     const handleQuantity = (productId: string , quantity : number ) =>{
         if (quantity <= 0) {return ;}
 
         updateItemInCart(productId, quantity)
     } ; 
+
+    const handleRemoveItem = (productId: string ) => {
+        deleteItemInCart(productId) ; 
+    }
     
 
 return ( 
@@ -45,7 +49,9 @@ return (
         <Button onClick={() =>  handleQuantity(item.productId, item.quantity -1 ) }>-</Button>
         <Button onClick={() => handleQuantity(item.productId, item.quantity +1 )}>+</Button>
         </ButtonGroup>
-        <Button> Remove item </Button>
+        <Button onClick={()=> {
+            handleRemoveItem(item.productId)
+        }}> Remove item </Button>
     
         </Box>
 
