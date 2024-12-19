@@ -171,8 +171,39 @@ console.log(error) ;
 console.log(error) ; 
     }
    }
+
+
+
+   const clearCart  = async() => {
+    
+    try {
+        const response = await fetch (`${BASE_URL}/cart` , {
+            method: "DELETE", 
+            headers: {
+                Authorization: `Bearer ${token}` , 
+            }
+        });
+
+        if (!response.ok) {
+            setError('failed to Delete ') ;
+        }
+        const cart = await response.json() ; 
+        if (!cart ){
+            setError('failed to empty cart')
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
+        setCartItems([]) ; 
+        setTotalAmount(0) ;
+
+    } catch (error){
+console.log(error) ; 
+    }
+
+   }
 return (
-    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart , updateItemInCart , deleteItemInCart}}>
+    <CartContext.Provider value={{cartItems, totalAmount , addItemToCart , updateItemInCart , deleteItemInCart , clearCart}}>
         {children}
     </CartContext.Provider>
 )

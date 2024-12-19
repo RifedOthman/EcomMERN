@@ -161,7 +161,7 @@ export const clearCart = async({userId}:clearCart)=>{
     cart.items= []  ; 
     cart.totalAmount = 0 ;
     const updateCart = await cart.save() ; 
-    return {data : updateCart , statusCode : 201 } ; 
+    return {data : await getActiveCartForUser({userId, populateProduct: true}) , statusCode : 201 } ; 
 
 }; 
 interface checkOut{
